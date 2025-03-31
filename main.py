@@ -16,16 +16,16 @@ def main():
             if tossWinner == 1:
                   print("You won the toss!!");
                   playerChoice = int(input("Select 1 to bat, 2 to bowl:"));
-                  playerScore, computerScore = playGame(over,playerChoice);
+                  playGame(over,playerChoice);
             else:
                   print("You loss the toss..");
                   computerChoice = random.randint(1,2);
                   playerChoice = 1 if computerChoice == 2 else 2;
-                  playerScore, computerScore = playGame(over,playerChoice);
+                  playGame(over,playerChoice);
             # starts the game
-            winner(playerScore,computerScore);
       except ValueError:
             print("Invalid input, exiting game...");
+          
             
 def toss():
       print("It's time for a toss:");
@@ -57,7 +57,6 @@ def playGame(overs, playerChoice):
             else:
                   computerScore , computerWicketsRemaining = Turn(computerScore,computerWicketsRemaining ,playerChoice, over, np.inf)
             
-      
       print("1'st inngins is Over.");
       toChase = playerScore+1 if playerChoice == 1 else computerScore+1;
       print("To win","opponent" if playerChoice == 1 else "you","need ",toChase,"runs to win in ",overs,"overs")
@@ -73,8 +72,8 @@ def playGame(overs, playerChoice):
             else:
                   computerScore , computerWicketsRemaining = Turn(computerScore,computerWicketsRemaining ,newPlayerChoice, over, toChase)
             
-      return playerScore , computerScore
-      
+      winner(playerScore,computerScore,playerWicketsRemaining,computerWicketsRemaining);
+
 
 def Turn(score,wicketsRemaining ,playerChoice, over, toChase):
       print("==========");
@@ -128,22 +127,23 @@ def Turn(score,wicketsRemaining ,playerChoice, over, toChase):
                         print("Opponent Won!");
                         break;
             balls += 1;
-      
-      
+        
       displayScore(score,over,wicketsRemaining);
       return score,wicketsRemaining;
+
 
 def displayScore(Score , over ,wicketsRemaining):
       print("\nScoreboard")
       print("==========")
       print(f"Over {over + 1}:")
-      print(f"Runs: {Score} , {wicketsRemaining} wickets remaining")
+      print(f"Runs: {Score} / {10 - wicketsRemaining}")
 
-def winner(playerScore , computerScore):
+
+def winner(playerScore , computerScore , playerWicketsRemaining, computerWicketsRemaining):
       print("==========");
       print("Match Result");
-      print("Your Score: ",playerScore);
-      print("Opponent Score: ", computerScore);
+      print("Your Score: ",playerScore,'/',10 - playerWicketsRemaining);
+      print("Opponent Score: ", computerScore,'/',10 - computerWicketsRemaining);
       if playerScore > computerScore:
             print("You won the Match!!");
       elif computerScore > playerScore:
@@ -151,5 +151,6 @@ def winner(playerScore , computerScore):
       else:
             print("The match ended in a draw")
       print("Thank you for playing and have a good day :) ")
+
 
 main()
